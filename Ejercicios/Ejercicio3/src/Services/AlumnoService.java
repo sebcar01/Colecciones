@@ -9,9 +9,19 @@ import java.util.Scanner;
 
 public class AlumnoService {
 
-    Scanner sc = new Scanner(System.in).useDelimiter("\n");
-    List<Alumno> alumnos = new ArrayList<Alumno>();
-    boolean validacion = true;
+    private Scanner sc = new Scanner(System.in).useDelimiter("\n");
+    private List<Alumno> alumnos = new ArrayList<Alumno>();
+    private boolean validacion = true;
+
+    /**
+     * Esta función crea alumnos pidiendole su nombre y tres notas. Estos datos los alberga en dos variables
+     * Una variable String con el nombre y una lista con nombre notas, una vez recolectados se instancia el objeto
+     * Alumno y se lo pasamos a la lista de alumnos.
+     *
+     * Se le pregunta al usuario si desea ingresa otro alumno o no, de acuerdo a esto se repetirán o no los mismos
+     * pasos
+     *
+     */
 
     public void crearAlumno() {
 
@@ -25,7 +35,7 @@ public class AlumnoService {
            System.out.println("Ingresa el nombre");
            nombre = sc.next();
 
-           List<Integer> notasI = new ArrayList<Integer>();
+           List<Integer> notas = new ArrayList<Integer>();
 
            System.out.println("Ingresa las 3 notas");
 
@@ -33,11 +43,11 @@ public class AlumnoService {
 
                System.out.println("Nota " + i);
                nota = sc.nextInt();
-               notasI.add(nota);
+               notas.add(nota);
 
            }
 
-           alumnos.add(new Alumno(nombre, notasI));
+           alumnos.add(new Alumno(nombre, notas));
 
            System.out.println("Deseas ingresar otro alumno? Responde si o no.");
            respuesta = sc.next();
@@ -47,6 +57,13 @@ public class AlumnoService {
        } while (validacion);
 
     }
+
+    /**
+     * Esta función le pide al usuario un nombre, con este nombre se busca dentro del arreglo alumnos si el alumno
+     * existe, si el alumno existe, se calcula su promedio y es lo que se imprime.
+     *
+     * Si el alumno no existe, no se calcula nada y se imprime que el usuario no existe.
+     */
 
     public void notaFinal() {
         int suma = 0;
@@ -60,20 +77,28 @@ public class AlumnoService {
 
             if (aux.getNombre().equalsIgnoreCase(nombre)) {
 
+                validacion = true; // El alumno se encontró
+
                 for (int aux1 : aux.getNotas()) {
 
                     suma += aux1;
-                    validacion = true;
 
                 }
-
+                break; // Se coloca para que no se hagan iteraciones innecesarias una vez se encuentre al alumno.
             }
 
         }
 
-        promedio = ((double) suma / 3);
+        if (validacion) {
 
-        System.out.print(validacion ? "El alumno existe, su nota final es: " + promedio : "El alumno no existe.");
+            promedio = ((double) suma / 3);
+            System.out.println("El alumno existe, su nota final es: " + promedio);
+
+        } else {
+
+            System.out.println("El alumno no existe.");
+
+        }
 
     }
 
